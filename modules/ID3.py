@@ -74,11 +74,11 @@ def mode(data_set):
     countOne = 0
     countZero = 0
     for i in range(0,len(data_set)):
-        if(data_set[i][0]==1):
+        if data_set[i][0]==1 :
             countOne+=1
-        if(data_set[i][0]==0):
+        if data_set[i][0]==0 :
             countZero+=1
-    if(countOne>countZero):
+    if countOne>countZero :
         return 1
     else:
         return 0
@@ -99,7 +99,25 @@ def entropy(data_set):
     Output: Returns entropy. Number between 0-1. See Textbook for formula
     ========================================================================================================
     '''
-    # Your code here
+    countOne = 0
+    countZero = 1
+    entropyValue = 0
+    for i in range(0,len(data_set)):
+        if data_set[i][0]==1 :
+            countOne+=1
+        if data_set[i][0]==0 :
+            countZero+=1
+    p = countOne/(countOne+countZero)
+    n = countZero/(countOne+countZero)
+    if p!=0 and n!=0 :
+        entropyValue= -p*math.log(p[,2])-n*math.log(n[,2])
+    elif p==0 and n!=0:
+        entropyValue= -n*math.log(n[,2])
+    elif p!=0 and n==0:
+        entropyValue= -p*math.log(p[,2])
+    else:
+        entropyValue= 0
+    return entropyValue
     pass
 # ======== Test case =============================
 # data_set = [[0],[1],[1],[1],[0],[1],[1],[1]]
