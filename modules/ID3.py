@@ -110,11 +110,11 @@ def entropy(data_set):
     p = countOne/(countOne+countZero)
     n = countZero/(countOne+countZero)
     if p!=0 and n!=0 :
-        entropyValue= -p*math.log(p[,2])-n*math.log(n[,2])
+        entropyValue= -p*math.log(p,2)-n*math.log(n,2)
     elif p==0 and n!=0:
-        entropyValue= -n*math.log(n[,2])
+        entropyValue= -n*math.log(n,2)
     elif p!=0 and n==0:
-        entropyValue= -p*math.log(p[,2])
+        entropyValue= -p*math.log(p,2)
     else:
         entropyValue= 0
     return entropyValue
@@ -138,7 +138,26 @@ def gain_ratio_nominal(data_set, attribute):
     Output: Returns gain_ratio. See https://en.wikipedia.org/wiki/Information_gain_ratio
     ========================================================================================================
     '''
-    # Your code here
+    entropyWhole = entropy(data_set)
+    totalNum = len(data_set)
+    subset_entropy = 0.0
+    intrinsic_val = 0.0
+    # Calculate the frequency of each of the values in the target attribute
+    val_freq  = {}
+    for i in range(0,len(data_set)):
+        if val_freq.has_key(data_set[i][attribute]):
+            val_freq[data_set[i][attribute]] += 1.0
+        else:
+            val_freq[data_set[i][attribute]] = 1.0
+    # Calculate the sum of the entropy for each subset of records weighted
+    # by their probability of occuring in the training set.
+    for val in val_freq.keys():
+        val_prob  = val_freq[val] / totalNum
+        data_subset  = [record for record in data if record[attr] == val]
+        subset_entropy += val_prob * entropy(data_subset)
+        intrinsic_val += - val_prob * math.log(val_prob,2)
+    InfoGain = entropyWhole - subset_entropy
+    return InfoGain/intrinsic_val
     pass
 # ======== Test case =============================
 # data_set, attr = [[1, 2], [1, 0], [1, 0], [0, 2], [0, 2], [0, 0], [1, 3], [0, 4], [0, 3], [1, 1]], 1
