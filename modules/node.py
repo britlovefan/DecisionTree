@@ -34,7 +34,24 @@ class Node:
         '''
         given a single observation, will return the output of the tree
         '''
-        
+        for i in range(1,len(instance):
+            attribute = insance[i]
+            child = self.children
+            # if the the children is numeric, "0" for smaller, "1" for bigger
+            if(type(child)==list):
+                if(self.value<self.splitting_value):
+                    self = child[0]
+                else:
+                    self = child[1]
+            else: 
+                
+
+
+
+
+
+
+
             
         # Your code here
         pass
