@@ -143,7 +143,7 @@ def gain_ratio_nominal(data_set, attribute):
     subset_entropy = 0.0
     intrinsic_val = 0.0
     # Calculate the frequency of each of the values in the target attribute
-    val_freq  = {}
+    val_freq = {}
     for i in range(0,len(data_set)):
         if val_freq.has_key(data_set[i][attribute]):
             val_freq[data_set[i][attribute]] += 1.0
@@ -153,7 +153,7 @@ def gain_ratio_nominal(data_set, attribute):
     # by their probability of occuring in the training set.
     for val in val_freq.keys():
         val_prob  = val_freq[val] / totalNum
-        data_subset  = [record for record in data if record[attr] == val]
+        data_subset  = [record for record in data_set if record[attribute] == val]
         subset_entropy += val_prob * entropy(data_subset)
         intrinsic_val += - val_prob * math.log(val_prob,2)
     InfoGain = entropyWhole - subset_entropy
@@ -182,7 +182,31 @@ def gain_ratio_numeric(data_set, attribute, steps):
     Output: This function returns the gain ratio and threshold value
     ========================================================================================================
     '''
-    # Your code here
+    totalNum = len(data_set)
+    index = 0
+    pair = {}
+    while index < totalNum:
+        set1 = 0
+        set2 = 0
+        threshold = data_set[index][attribute]
+        # Calculate the two set's size according to the threshold
+        for i in range(0,totalNum):
+            if(data_set[i][attribute] >= threshold):
+                set1 = set1 + 1
+            else:
+                set2 = set2 + 1
+        val_prob1 = set1/totalNum
+        val_prob2 = set2/totalNum
+        data_subset1 = [record for record in data_set if record[attribute] >= threshold]
+        data_subset2 = [record for record in data_set if record[attribute] < threshold]
+        entroy_sum = val_prob1 * entropy(data_subset1) + val_prob2 * entropy(data_subset2)
+        intrinsic_val = - val_prob1 * math.log(val_prob1,2) - val_prob2 * math.log(val_prob2,2)
+        gain_ratio = (entropy(data_set) - entroy_sum) / intrinsic_val
+        pair[gain_ratio] = threshold
+        # update index and pair value
+        index = index * step
+    max_gain = max(pair.keys)
+    return (max_gain,pair[max_gain])
     pass
 # ======== Test case =============================
 # data_set,attr,step = [[1,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]], 1, 20
