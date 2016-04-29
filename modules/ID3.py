@@ -47,7 +47,33 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
     Output: best attribute, split value if numeric
     ========================================================================================================
     '''
-    # Your code here
+    # loop through the attribute
+    # ?What is best split value? 
+    pair = {}
+    max = 0.0
+    zero_count = 0.0
+    for i in range(0,len(attribute_metadata)):
+        # if the counts numbe is 0, don't add 
+        if(attribute_metadata[i][1]):
+            val = gain_ratio_nominal(data_set,i)
+            if(val==0):
+                zero_count+=1
+        else:
+            if(gain_ratio_numeric(data_set,i,1)==0):
+                zero_count+=1
+            if(numerical_splits_count[i]!=0):
+                val = gain_ratio_numeric(data_set,i,1) #set the default step to 1
+        pair[val] = i
+    # if gain ratio of all the attributes is zero
+    if(zero_count==len(attribute_metadata)): 
+        return (False,False)
+    max_value = max(pair.keys())
+    attribute_value = pair[max_value]
+    if(attribute_metadata[i][attribute_value]):
+        split = False
+    else:
+        split = data_set[max_value][attribute_value]
+    return (max_value,split)
     pass
 
 # # ======== Test Cases =============================
@@ -226,7 +252,13 @@ def split_on_nominal(data_set, attribute):
     Output: Dictionary of all values pointing to a list of all the data with that attribute
     ========================================================================================================
     '''
-    # Your code here
+    pair = {}
+    for i in range(0,len(data_set)):
+        if pair.has_key(data_set[i][attribute]):
+           pair[data_set[i][attribute]].append(data_set[i])
+        else:
+            pair[data_set[i][attribute]]=[data_set[i]]
+    return pair
     pass
 # ======== Test case =============================
 # data_set, attr = [[0, 4], [1, 3], [1, 2], [0, 0], [0, 0], [0, 4], [1, 4], [0, 2], [1, 2], [0, 1]], 1
@@ -244,7 +276,9 @@ def split_on_numerical(data_set, attribute, splitting_value):
     Output: Data less than splitting value and data that is equal to or greater than the splitting value
     ========================================================================================================
     '''
-    # Your code here
+    # Might just sort the list according?
+    new_list = data_set.sort(key = lambda tup:tup[1])
+    return new_list
     pass
 # ======== Test case =============================
 # d_set,a,sval = [[1, 0.25], [1, 0.89], [0, 0.93], [0, 0.48], [1, 0.19], [1, 0.49], [0, 0.6], [0, 0.6], [1, 0.34], [1, 0.19]],1,0.48
