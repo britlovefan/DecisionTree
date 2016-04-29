@@ -34,7 +34,7 @@ class Node:
         '''
         given a single observation, will return the output of the tree
         '''
-        if(instance==1||instance==0):
+        
             
         # Your code here
         pass

@@ -6,7 +6,7 @@ from modules.graph import *
 from modules.predictions import *
 from modules.pickled import *
 
-EPSILON = 0.0000001
+EPSILON = 0.001
 
 ## Running File
 #
@@ -22,10 +22,11 @@ options = {
     'p_best_attribute': True,
     'mode': True,
     'entropy': True,
-    'gain_ratio_nominal':True
+    'gain_ratio_nominal':True,
+    'classify': True
 }
 
-def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain_ratio_nominal=False,split_on_nominal=False,split_on_numerical=False, gain_ratio_numeric=False):
+def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain_ratio_nominal=False,split_on_nominal=False,split_on_numerical=False, gain_ratio_numeric=False, classify=False):
 	title = "=========="
 	gain_ratio_result = True
 	if homogenous:
@@ -41,24 +42,6 @@ def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain
 			else:
 				print "Failed %d"%(i+1)
 		print "Not all tests were met please look at %s"%name if total != 3 else "All tests passed"
-	if p_best_attribute:
-		name = "pick_best_attribute"
-		print title,name,title
-		numerical_splits_count = [20,20]
-		a_meta = [[{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
-		,[{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}]]
-
-		d_set = [[[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [0, 0.51], [1, 0.4]],
-		[[0, 0], [1, 0], [0, 2], [0, 2], [0, 3], [1, 1], [0, 4], [0, 2], [1, 2], [1, 5]]]
-		result = [(1, 0.51),(1, False)]
-		total = 0
-		for i in xrange(2):
-			if pick_best_attribute(d_set[i], a_meta[i], numerical_splits_count) == result[i]:
-				total += 1
-				print "Passed %d"%(i+1)
-			else:
-				print "Failed %d"%(i+1)
-		print "Not all tests were met please look at %s"%name if total != 2 else "All tests passed"
 	if mode:
 		name = "mode"
 		print title,name,title
@@ -83,6 +66,14 @@ def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain
 		name = "split_on_numerical"
 		print title,name,title
 		print "Not all tests were met please look at %s"%name if split_o_num(name) is not 2 else "All tests passed"
+	if classify:
+		name = "classify"
+		print title,name,title
+		check_classify()
+        if ID3:
+		name = "ID3"
+		print title,name,title
+		check_ID3()
 
 def create_data_set(typ):
 	return [[random.randint(0,1) if y is 0 else (round(random.random(),2) if typ is 'numeric' else random.randint(0,
@@ -130,11 +121,11 @@ def check_gain_ratio_nom():
 	print "Not all tests were met please look at gain_ratio_nominal" if total != len(result) else "All tests passed"
 
 def check_gain_ratio_num():
-	step = [20,30,40]
-	data_set = [[[1,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]]
+	step = [2,4,1]
+	data_set = [[[0,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]]
 	,[[1, 0.35], [1, 0.24], [0, 0.67], [0, 0.36], [1, 0.94], [1, 0.4], [1, 0.15], [0, 0.1], [1, 0.61], [1, 0.17]]
 	,[[1, 0.1], [0, 0.29], [1, 0.03], [0, 0.47], [1, 0.25], [1, 0.12], [1, 0.67], [1, 0.73], [1, 0.85], [1, 0.25]]]
-	result = [(0.21744375685031775, 0.19),(0.4125984252687806, 0.15),(0.23645279766002802, 0.29)]
+	result = [(0.31918053332474033, 0.64),(0.11689800358692547, 0.94),(0.23645279766002802, 0.29)]
 	total = 0
 	for i in xrange(3):
 		GRNum = gain_ratio_numeric(data_set[i],1,step[i])
@@ -171,5 +162,65 @@ def printing_results(data_set,result,function):
 			print "Failed %d"%(i+1)
 	print "Not all tests were met please look at %s"% function.__name__ if total != len(result) else "All tests passed"
 
+def check_classify():
+	n0 = Node()
+	n0.label = 1
+	i = 0;
+	if n0.classify([0, 1, 2]) == 1:
+		print "Passed 1"
+		i += 1
+	else:
+		print "Failed 1"
+	n1 = Node()
+	n1.label = 0
+	n = Node()
+	n.label = None
+	n.decision_attribute = 1
+	n.is_nominal = True
+	n.name = "You saw the attributes what do you think?"
+	n.children = {1: n0, 2: n1}
+	if n.classify([0, 2]) == 0:
+		print "Passed 2"
+		i += 1
+	else:
+		print "Failed 2"
+	if i == 2:
+		print "All tests passed"
+	else:
+		print "Not all tests passed, look at classify"
 
+def check_ID3():
+   attribute_metadata = [{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
+   data_set = [[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [1, 0.42], [0, 0.51], [1, 0.4]]
+   numerical_splits_count = [5, 5]
+   n = ID3(data_set, attribute_metadata, numerical_splits_count, 0)
+   fails = 0;
+   if n and n.label == 1:
+      print "Passed 1"
+   else:
+      print "Failed 1"
+      fails += 1
+   attribute_metadata = [{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
+   data_set = [[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [1, 0.42], [0, 0.51], [1, 0.4]]
+   numerical_splits_count = [1, 1]
+   n = ID3(data_set, attribute_metadata, numerical_splits_count, 5)
+   if n and [n.classify(x) == x[0] for x in data_set] == [True, False, True, True, False, True, True, True, True, True, True]:
+      print "Passed 2"
+   else:
+      print "Failed 2"
+      fails += 1
+
+   attribute_metadata = [{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
+   data_set = [[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [1, 0.42], [0, 0.51], [1, 0.4]]
+   numerical_splits_count = [5, 5]
+   n = ID3(data_set, attribute_metadata, numerical_splits_count, 5)
+   if n and [n.classify(x) == x[0] for x in data_set] == [True, False, True, True, True, True, True, True, True, True, True]:
+      print "Passed 3"
+   else:
+      print "Failed 3"
+      fails += 1
+   if fails > 0:
+      print "not all tests passed, please see ID3."
+   else:
+      print "all tests passed."
 test = grader( **options )

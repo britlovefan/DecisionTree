@@ -53,8 +53,7 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
     max = 0.0
     zero_count = 0.0
     for i in range(0,len(attribute_metadata)):
-        # if the counts numbe is 0, don't add 
-        if(attribute_metadata[i][1]):
+        if attribute_metadata[i]['is_nominal']==True:
             val = gain_ratio_nominal(data_set,i)
             if(val==0):
                 zero_count+=1
@@ -69,7 +68,7 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
         return (False,False)
     max_value = max(pair.keys())
     attribute_value = pair[max_value]
-    if(attribute_metadata[i][attribute_value]):
+    if(attribute_metadata[i]['is_nominal']==True):
         split = False
     else:
         split = data_set[max_value][attribute_value]
@@ -125,25 +124,19 @@ def entropy(data_set):
     Output: Returns entropy. Number between 0-1. See Textbook for formula
     ========================================================================================================
     '''
-    countOne = 0
-    countZero = 1
-    entropyValue = 0
-    for i in range(0,len(data_set)):
-        if data_set[i][0]==1 :
-            countOne+=1
-        if data_set[i][0]==0 :
-            countZero+=1
-    p = countOne/(countOne+countZero)
-    n = countZero/(countOne+countZero)
-    if p!=0 and n!=0 :
-        entropyValue= -p*math.log(p,2)-n*math.log(n,2)
-    elif p==0 and n!=0:
-        entropyValue= -n*math.log(n,2)
-    elif p!=0 and n==0:
-        entropyValue= -p*math.log(p,2)
-    else:
-        entropyValue= 0
-    return entropyValue
+    N = len(data_set)
+    entropy = 0
+    labels = {}
+    for n in data_set:
+        label = n[0]
+        if label not in labels.keys():
+            labels[label] = 0
+        labels[label] += 1    
+    for key in labels:
+        prob = (float)(labels[key])/N
+        entropy -= prob * math.log(prob,2)
+    print entropy
+    return entropy
     pass
 # ======== Test case =============================
 # data_set = [[0],[1],[1],[1],[0],[1],[1],[1]]
@@ -152,8 +145,6 @@ def entropy(data_set):
 # entropy(data_set) == 1.0
 # data_set = [[0],[0],[0],[0],[0],[0],[0],[0]]
 # entropy(data_set) == 0
-
-
 def gain_ratio_nominal(data_set, attribute):
     '''
     ========================================================================================================
@@ -210,6 +201,7 @@ def gain_ratio_numeric(data_set, attribute, steps):
     '''
     totalNum = len(data_set)
     index = 0
+    k = 0
     pair = {}
     while index < totalNum:
         set1 = 0
@@ -230,7 +222,8 @@ def gain_ratio_numeric(data_set, attribute, steps):
         gain_ratio = (entropy(data_set) - entroy_sum) / intrinsic_val
         pair[gain_ratio] = threshold
         # update index and pair value
-        index = index * step
+        k = k + 1
+        index = k * step
     max_gain = max(pair.keys)
     return (max_gain,pair[max_gain])
     pass
@@ -276,9 +269,15 @@ def split_on_numerical(data_set, attribute, splitting_value):
     Output: Data less than splitting value and data that is equal to or greater than the splitting value
     ========================================================================================================
     '''
-    # Might just sort the list according?
-    new_list = data_set.sort(key = lambda tup:tup[1])
-    return new_list
+    # Divide the list to two according to the pivet
+    list1 = []
+    list2 = []
+    for i in range(0,len(data_set)):
+        if(data_set[i][attribute]>=splitting_value):
+            list1.append(data_set[i])
+        else:
+            list2.append(data_set[i])
+    return (list2,list1)
     pass
 # ======== Test case =============================
 # d_set,a,sval = [[1, 0.25], [1, 0.89], [0, 0.93], [0, 0.48], [1, 0.19], [1, 0.49], [0, 0.6], [0, 0.6], [1, 0.34], [1, 0.19]],1,0.48
