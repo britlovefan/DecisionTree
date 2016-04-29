@@ -34,29 +34,22 @@ class Node:
         '''
         given a single observation, will return the output of the tree
         '''
-        for i in range(1,len(instance):
-            attribute = insance[i]
+        for i in range(1,len(instance)):
+            if(self.label!=None):
+                return self
+            attribute = instance[i]
             child = self.children
-            # if the the children is numeric, "0" for smaller, "1" for bigger
+            # 1.if the the children is numeric, "0" for smaller, "1" for bigger
+            # 2.navigate to the child whose key matches our instance's attribute value.
             if(type(child)==list):
                 if(self.value<self.splitting_value):
                     self = child[0]
                 else:
                     self = child[1]
-            else: 
-                
-
-
-
-
-
-
-
-            
+            else:
+                self = child[attribute]
         # Your code here
         pass
-
-
     def print_tree(self, indent = 0):
         '''
         returns a string of the entire tree in human readable form
