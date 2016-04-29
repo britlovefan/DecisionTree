@@ -42,6 +42,24 @@ def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain
 			else:
 				print "Failed %d"%(i+1)
 		print "Not all tests were met please look at %s"%name if total != 3 else "All tests passed"
+	if p_best_attribute:
+		name = "pick_best_attribute"
+		print title,name,title
+		numerical_splits_count = [20,20]
+		a_meta = [[{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
+		,[{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}]]
+
+		d_set = [[[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [0, 0.51], [1, 0.4]],
+		[[0, 0], [1, 0], [0, 2], [0, 2], [0, 3], [1, 1], [0, 4], [0, 2], [1, 2], [1, 5]]]
+		result = [(1, 0.51),(1, False)]
+		total = 0
+		for i in xrange(2):
+			if pick_best_attribute(d_set[i], a_meta[i], numerical_splits_count) == result[i]:
+				total += 1
+				print "Passed %d"%(i+1)
+			else:
+				print "Failed %d"%(i+1)
+		print "Not all tests were met please look at %s"%name if total != 2 else "All tests passed"
 	if mode:
 		name = "mode"
 		print title,name,title

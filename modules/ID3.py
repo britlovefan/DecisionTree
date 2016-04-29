@@ -48,21 +48,22 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
     ========================================================================================================
     '''
     # loop through the attribute
-    # ?What is best split value? 
+    # ?What is best split value = 
     pair = {}
-    max = 0.0
     zero_count = 0.0
-    for i in range(0,len(attribute_metadata)):
+    val = 0.0
+    for i in range(1,len(attribute_metadata)):
         if attribute_metadata[i]['is_nominal']==True:
             val = gain_ratio_nominal(data_set,i)
             if(val==0):
                 zero_count+=1
         else:
-            if(gain_ratio_numeric(data_set,i,1)==0):
+            if(gain_ratio_numeric(data_set,i,1)[0]==0):
                 zero_count+=1
             if(numerical_splits_count[i]!=0):
-                val = gain_ratio_numeric(data_set,i,1) #set the default step to 1
+                val = gain_ratio_numeric(data_set,i,1)[1] #set the default step to 1
         pair[val] = i
+    print pair
     # if gain ratio of all the attributes is zero
     if(zero_count==len(attribute_metadata)): 
         return (False,False)
@@ -71,8 +72,8 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
     if(attribute_metadata[i]['is_nominal']==True):
         split = False
     else:
-        split = data_set[max_value][attribute_value]
-    return (max_value,split)
+        split = max_value
+    return (attribute_value,split)
     pass
 
 # # ======== Test Cases =============================
@@ -135,7 +136,6 @@ def entropy(data_set):
     for key in labels:
         prob = (float)(labels[key])/N
         entropy -= prob * math.log(prob,2)
-    print entropy
     return entropy
     pass
 # ======== Test case =============================
@@ -199,33 +199,35 @@ def gain_ratio_numeric(data_set, attribute, steps):
     Output: This function returns the gain ratio and threshold value
     ========================================================================================================
     '''
-    totalNum = len(data_set)
-    index = 0
-    k = 0
-    pair = {}
-    while index < totalNum:
-        set1 = 0
-        set2 = 0
-        threshold = data_set[index][attribute]
-        # Calculate the two set's size according to the threshold
-        for i in range(0,totalNum):
-            if(data_set[i][attribute] >= threshold):
-                set1 = set1 + 1
+    features = len(data_set) - 1
+    baseEntropy = entropy(data_set)
+    bestInfoGain = 0
+    bestFeat = 0
+    for i in range(len(data_set)/steps):
+        datanew1 = []
+        datanew2 = []
+        for j in range(len(data_set)):
+            if data_set[j][attribute] >= data_set[steps*i][attribute]:
+                datanew1.append(data_set[j])
             else:
-                set2 = set2 + 1
-        val_prob1 = set1/totalNum
-        val_prob2 = set2/totalNum
-        data_subset1 = [record for record in data_set if record[attribute] >= threshold]
-        data_subset2 = [record for record in data_set if record[attribute] < threshold]
-        entroy_sum = val_prob1 * entropy(data_subset1) + val_prob2 * entropy(data_subset2)
-        intrinsic_val = - val_prob1 * math.log(val_prob1,2) - val_prob2 * math.log(val_prob2,2)
-        gain_ratio = (entropy(data_set) - entroy_sum) / intrinsic_val
-        pair[gain_ratio] = threshold
-        # update index and pair value
-        k = k + 1
-        index = k * step
-    max_gain = max(pair.keys)
-    return (max_gain,pair[max_gain])
+                datanew2.append(data_set[j])
+        new_entropy = 0
+        prob1 = (float)(len(datanew1))/len(data_set)
+        prob2 = (float)(len(datanew2))/len(data_set)
+        new_entropy = prob1 * entropy(datanew1) + prob2 * entropy(datanew2)
+        infoGain = baseEntropy - new_entropy
+        if (infoGain > bestInfoGain):
+            bestInfoGain = infoGain
+            bestFeat = steps*i
+            datanew11 = datanew1
+            datanew22 = datanew2
+        new_entropy = 0
+        infoGain = 0
+    prob1 = (float)(len(datanew11))/len(data_set)
+    prob2 = (float)(len(datanew22))/len(data_set)
+    IV = -prob1 * math.log(prob1, 2)-prob2 * math.log(prob2, 2) 
+    IGR = bestInfoGain/IV
+    return IGR,data_set[bestFeat][attribute]
     pass
 # ======== Test case =============================
 # data_set,attr,step = [[1,0.05], [1,0.17], [1,0.64], [0,0.38], [0,0.19], [1,0.68], [1,0.69], [1,0.17], [1,0.4], [0,0.53]], 1, 20
