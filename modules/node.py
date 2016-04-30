@@ -36,19 +36,20 @@ class Node:
         '''
         for i in range(1,len(instance)):
             if(self.label!=None):
-                return self
+                print self.label
+                return self.label
             attribute = instance[i]
             child = self.children
             # 1.if the the children is numeric, "0" for smaller, "1" for bigger
             # 2.navigate to the child whose key matches our instance's attribute value.
             if(type(child)==list):
-                if(self.value<self.splitting_value):
+                if(attribute<self.splitting_value):
                     self = child[0]
                 else:
                     self = child[1]
             else:
                 self = child[attribute]
-        # Your code here
+        return self.label
         pass
     def print_tree(self, indent = 0):
         '''
