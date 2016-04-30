@@ -8,7 +8,36 @@ def ID3(data_set, attribute_metadata, numerical_splits_count, depth):
     Make sure to handle unknown values, some suggested approaches were
     given in lecture.
     '''
-    # Your code here
+    # return a tree that correctly classify the given examples 
+    # depth is the maximum depth a tree can grow
+    root = Node()
+    if(len(data_set)==0):
+        return root
+    # if all the classfication of the each of the data is the same
+    elif check_homogenous(data_set)!=None:
+        root.label = check_homogenous(data_set)
+        return root
+    # if all the attribute is empty, return Mode(examples)
+    elif len(attribute_metadata)==0:
+        return mode(data_set)
+    else:
+        (best_attribute,split) = pick_best_attribute(data_set, attribute_metadata, numerical_splits_count)
+        root.decision_attribute = best_attribute
+        examples={}
+        for i in range(0,len(data_set)):
+            value = data_set[i][best_attribute]
+            if(!examples.has_key(value)):
+                examples[value] = [record for record in data_set if record[best_attribute] == value]
+        # for each possible values of best_attribute,find the subset data_set 
+        for v in examples.keys():
+            child = Node()
+            
+            subset = examples[v]
+
+
+     
+
+
     pass
 
 def check_homogenous(data_set):
@@ -63,7 +92,6 @@ def pick_best_attribute(data_set, attribute_metadata, numerical_splits_count):
             if(numerical_splits_count[i]!=0):
                 val = gain_ratio_numeric(data_set,i,1)[1] #set the default step to 1
         pair[val] = i
-    print pair
     # if gain ratio of all the attributes is zero
     if(zero_count==len(attribute_metadata)): 
         return (False,False)
