@@ -25,6 +25,23 @@ options = {
     }
 }
 
+def changemissing(data):
+   #dealing with missing attributes : '?'
+    sum_value = 0
+    for j in range(1,len(data[0])):
+        for i in range(len(data)):
+            if data[i][j] == None:
+                pass
+            else:
+                sum_value += data[i][j]
+        mean_value = sum_value/len(data)
+        for i in range(len(data)):
+            if data[i][j] != None:
+                pass
+            else:
+                data[i][j] = mean_value
+    return data
+
 def decision_tree_driver(train, validate = False, predict = False, prune = False,
     limit_splits_on_numerical = False, limit_depth = False, print_tree = False,
     print_dnf = False, learning_curve = False):
@@ -43,6 +60,8 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
     print "###\n#  Training Tree\n###"
 
     # call the ID3 classification algorithm with the appropriate options
+    # deal with missing data
+    train_set = changemissing(train_set)
     tree = ID3(train_set, attribute_metadata, numerical_splits_count, depth)
     print '\n'
 
