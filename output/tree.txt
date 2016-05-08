@@ -1,0 +1,327 @@
+numinjured : 1.0
+	oppnuminjured : 1.0
+		oppwinningpercent : 0.366154144
+			Leaf: 0
+		oppwinningpercent : 0.366154144
+			numinjured : -1.0
+				Leaf: 0
+			numinjured : -1.0
+				oppwinningpercent : 0.944415825854
+					Leaf: 1
+				oppwinningpercent : 0.944415825854
+					weather
+						Leaf: 1
+					weather
+						Leaf: 0
+	oppnuminjured : 1.0
+		opprundifferential : 13.0
+			Leaf: 1
+		opprundifferential : 13.0
+			opprundifferential : 41.0
+				rundifferential : 12.0
+					Leaf: 1
+				rundifferential : 12.0
+					rundifferential : 66.0
+						oppdayssincegame : 1.0
+							oppwinningpercent : 0.723451267
+								Leaf: 0
+							oppwinningpercent : 0.723451267
+								Leaf: 1
+						oppdayssincegame : 1.0
+							Leaf: 0
+					rundifferential : 66.0
+						homeaway
+							Leaf: 0
+						homeaway
+							oppstartingpitcher
+								Leaf: 0
+							oppstartingpitcher
+								Leaf: 1
+							oppstartingpitcher
+								Leaf: 1
+							oppstartingpitcher
+								Leaf: 1
+			opprundifferential : 41.0
+				Leaf: 0
+numinjured : 1.0
+	oppnuminjured : 2.0
+		oppwinningpercent : 0.195529965
+			rundifferential : 122.75961229
+				winpercent : 0.317461972
+					Leaf: 1
+				winpercent : 0.317461972
+					winpercent : 0.40563938
+						winpercent : 0.382762723
+							Leaf: 0
+						winpercent : 0.382762723
+							Leaf: 1
+					winpercent : 0.40563938
+						Leaf: 0
+			rundifferential : 122.75961229
+				Leaf: 1
+		oppwinningpercent : 0.195529965
+			winpercent : 0.929746511
+				oppwinningpercent : 0.214639846
+					rundifferential : 96.0
+						Leaf: 1
+					rundifferential : 96.0
+						Leaf: 0
+				oppwinningpercent : 0.214639846
+					winpercent : 0.901611692
+						winpercent : 0.82937787
+							rundifferential : 3.0
+								weather
+									Leaf: 0
+								weather
+									Leaf: 1
+								weather
+									Leaf: 1
+							rundifferential : 3.0
+								temperature : 52.89468607
+									temperature : 51.77719278
+										Leaf: 1
+									temperature : 51.77719278
+										Leaf: 0
+								temperature : 52.89468607
+									winpercent : 0.791897269
+										numinjured : 64.3090859747
+											rundifferential : 23.0
+												rundifferential : 22.0
+													Leaf: 1
+												rundifferential : 22.0
+													homeaway
+														Leaf: 0
+													homeaway
+														Leaf: 1
+											rundifferential : 23.0
+												Leaf: 1
+										numinjured : 64.3090859747
+											dayssincegame : 4.0
+												Leaf: 1
+											dayssincegame : 4.0
+												oppstartingpitcher
+													Leaf: 0
+												oppstartingpitcher
+													Leaf: 1
+												oppstartingpitcher
+													Leaf: 1
+												oppstartingpitcher
+													Leaf: 1
+									winpercent : 0.791897269
+										dayssincegame : 3.0
+											weather
+												Leaf: 0
+											weather
+												Leaf: 1
+										dayssincegame : 3.0
+											Leaf: 1
+						winpercent : 0.82937787
+							opprundifferential : 64.0
+								Leaf: 1
+							opprundifferential : 64.0
+								numinjured : 2.0
+									Leaf: 1
+								numinjured : 2.0
+									oppdayssincegame : 2.0
+										Leaf: 1
+									oppdayssincegame : 2.0
+										rundifferential : 33.0
+											Leaf: 1
+										rundifferential : 33.0
+											Leaf: 0
+					winpercent : 0.901611692
+						oppwinningpercent : 0.377210991
+							Leaf: 0
+						oppwinningpercent : 0.377210991
+							Leaf: 1
+			winpercent : 0.929746511
+				startingpitcher
+					Leaf: 0
+				startingpitcher
+					Leaf: 1
+				startingpitcher
+					Leaf: 0
+	oppnuminjured : 2.0
+		numinjured : 2.0
+			opprundifferential : 19.0
+				Leaf: 1
+			opprundifferential : 19.0
+				oppwinningpercent : 1.139494962
+					rundifferential : 2.0
+						Leaf: 1
+					rundifferential : 2.0
+						opprundifferential : 37.0
+							rundifferential : 58.0
+								temperature : 71.65690726
+									oppdayssincegame : 1.0
+										Leaf: 1
+									oppdayssincegame : 1.0
+										Leaf: 0
+								temperature : 71.65690726
+									Leaf: 1
+							rundifferential : 58.0
+								temperature : 74.05540095
+									temperature : 60.43549821
+										startingpitcher
+											Leaf: 0
+										startingpitcher
+											Leaf: 1
+										startingpitcher
+											Leaf: 0
+										startingpitcher
+											Leaf: 0
+									temperature : 60.43549821
+										Leaf: 1
+								temperature : 74.05540095
+									Leaf: 0
+						opprundifferential : 37.0
+							dayssincegame : 73.740664922
+								oppwinningpercent : 0.945960933
+									rundifferential : 95.0
+										opprundifferential : 170.29961229
+											Leaf: 0
+										opprundifferential : 170.29961229
+											startingpitcher
+												Leaf: 1
+											startingpitcher
+												Leaf: 0
+											startingpitcher
+												Leaf: 0
+									rundifferential : 95.0
+										rundifferential : 122.75961229
+											Leaf: 1
+										rundifferential : 122.75961229
+											Leaf: 0
+								oppwinningpercent : 0.945960933
+									winpercent : 0.731106884
+										Leaf: 1
+									winpercent : 0.731106884
+										Leaf: 0
+							dayssincegame : 73.740664922
+								oppstartingpitcher
+									Leaf: 0
+								oppstartingpitcher
+									Leaf: 0
+								oppstartingpitcher
+									Leaf: 0
+								oppstartingpitcher
+									Leaf: 1
+				oppwinningpercent : 1.139494962
+					Leaf: 1
+		numinjured : 2.0
+			oppwinningpercent : 0.147950198
+				Leaf: 0
+			oppwinningpercent : 0.147950198
+				oppnuminjured : 3.0
+					dayssincegame : 1.0
+						weather
+							Leaf: 0
+						weather
+							Leaf: 1
+					dayssincegame : 1.0
+						numinjured : 64.3090859747
+							winpercent : 0.733794366
+								oppwinningpercent : 0.230879153
+									homeaway
+										Leaf: 0
+									homeaway
+										Leaf: 1
+								oppwinningpercent : 0.230879153
+									oppwinningpercent : 0.329016446
+										opprundifferential : 63.0
+											Leaf: 1
+										opprundifferential : 63.0
+											weather
+												Leaf: 0
+											weather
+												Leaf: 1
+									oppwinningpercent : 0.329016446
+										Leaf: 1
+							winpercent : 0.733794366
+								numinjured : 3.0
+									oppdayssincegame : 3.0
+										weather
+											Leaf: 1
+										weather
+											Leaf: 1
+										weather
+											Leaf: 1
+										weather
+											Leaf: 0
+									oppdayssincegame : 3.0
+										Leaf: 1
+								numinjured : 3.0
+									oppstartingpitcher
+										Leaf: 1
+									oppstartingpitcher
+										Leaf: 0
+									oppstartingpitcher
+										Leaf: 0
+									oppstartingpitcher
+										Leaf: 0
+						numinjured : 64.3090859747
+							opprundifferential : 87.0
+								opprundifferential : 44.0
+									Leaf: 0
+								opprundifferential : 44.0
+									Leaf: 1
+							opprundifferential : 87.0
+								Leaf: 0
+				oppnuminjured : 3.0
+					oppnuminjured : 65.7175070273
+						numinjured : 3.0
+							opprundifferential : 43.0
+								homeaway
+									oppdayssincegame : 3.0
+										weather
+											Leaf: 0
+										weather
+											Leaf: 1
+										weather
+											Leaf: 0
+									oppdayssincegame : 3.0
+										Leaf: 0
+								homeaway
+									Leaf: 1
+							opprundifferential : 43.0
+								Leaf: 0
+						numinjured : 3.0
+							numinjured : 64.3090859747
+								rundifferential : 27.0
+									Leaf: 0
+								rundifferential : 27.0
+									opprundifferential : 56.0
+										Leaf: 1
+									opprundifferential : 56.0
+										oppnuminjured : 4.0
+											oppwinningpercent : 0.326988359
+												Leaf: 0
+											oppwinningpercent : 0.326988359
+												rundifferential : 34.0
+													Leaf: 0
+												rundifferential : 34.0
+													Leaf: 1
+										oppnuminjured : 4.0
+											Leaf: 0
+							numinjured : 64.3090859747
+								winpercent : 0.338672935
+									Leaf: 1
+								winpercent : 0.338672935
+									winpercent : 0.785018062
+										Leaf: 0
+									winpercent : 0.785018062
+										Leaf: 1
+					oppnuminjured : 65.7175070273
+						oppwinningpercent : 0.208758923
+							Leaf: 0
+						oppwinningpercent : 0.208758923
+							rundifferential : 122.75961229
+								temperature : 61.76173198
+									rundifferential : 61.0
+										Leaf: 1
+									rundifferential : 61.0
+										Leaf: 0
+								temperature : 61.76173198
+									Leaf: 1
+							rundifferential : 122.75961229
+								Leaf: 0

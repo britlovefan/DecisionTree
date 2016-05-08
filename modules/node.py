@@ -68,7 +68,7 @@ class Node:
                 for key in self.children:
                     blank += blank1 + (str(self.name)+ " : " + str(self.splitting_value) + "\n" + self.children[key].print_tree(indent + 1))
                     blank1 = "\t"* indent
-            elif dnf.is_nominal == True:
+            elif self.is_nominal == True:
                 blank1 = ""
                 for key in self.children:
                     blank += blank1 + (str(self.name) + "\n" + self.children[key].print_tree(indent + 1))

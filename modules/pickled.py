@@ -1,3 +1,4 @@
+#NOTE: you don't need to change anything in this function
 import pickle
 
 def makePickle(obj, filename):

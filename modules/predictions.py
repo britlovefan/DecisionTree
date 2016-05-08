@@ -14,13 +14,14 @@ def create_predictions(tree, predict):
     Given a tree and a url to a data_set. Create a csv with a prediction for each result
     using the classify method in node class.
     '''
+    # first calculate the predict list 
     predict_set, _ = parse(predict, True)
     predict_set = changemissing(predict_set)
     predictedClasslist = []
     for x in predict_set:
         predictedClass = tree.classify(x)
         predictedClasslist.append(predictedClass)
-    #print predict
+    # next output the file to csv 
     with open(predict,'r') as csvinput:
         with open('./output/PS2.csv', 'wb') as csvoutput:
             writer = csv.writer(csvoutput)
@@ -28,13 +29,10 @@ def create_predictions(tree, predict):
             i = 0
             size = len(predictedClasslist)
             for row in reader:
-                if(row[0]!="winpercent"):
-                    row[len(row)-1] = predictedClasslist[i-2]
-                    writer.writerow(row)
-                else:
-                    writer.writerow(row)
+                if(i!=0 and i<=size):
+                    row[len(row)-1] = predictedClasslist[i-1]
+                writer.writerow(row)
                 i+=1
-    print predictedClasslist
     csvoutput.close()
     csvinput.close()
 

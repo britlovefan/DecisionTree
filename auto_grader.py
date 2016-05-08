@@ -45,21 +45,24 @@ def grader(homogenous=False,p_best_attribute=False,mode=False,entropy=False,gain
 	if p_best_attribute:
 		name = "pick_best_attribute"
 		print title,name,title
-		numerical_splits_count = [20,20]
+		numerical_splits_count = [[20,20],[20,20],[20,20,20,20],[20,20,20,20]]
 		a_meta = [[{'name': "winner",'is_nominal': True},{'name': "opprundifferential",'is_nominal': False}]
-		,[{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}]]
-
+		,[{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}],
+                 [{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}, {'name': "attitude", 'is_nominal': False}],
+                 [{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}, {'name': "attitude", 'is_nominal': False}]]
 		d_set = [[[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [0, 0.51], [1, 0.4]],
-		[[0, 0], [1, 0], [0, 2], [0, 2], [0, 3], [1, 1], [0, 4], [0, 2], [1, 2], [1, 5]]]
-		result = [(1, 0.51),(1, False)]
+		[[0, 0], [1, 0], [0, 2], [0, 2], [0, 3], [1, 1], [0, 4], [0, 2], [1, 2], [1, 5]],
+                [[0, 0, 0.1], [1, 0, 0.2], [0, 2, 0.2], [0, 2, 0.2], [0, 3, 0.1], [1, 1, 0.1], [0, 4, 0.1], [0, 2, 0.1], [1, 2, 0.1], [1, 5, 0.1]],
+                [[0, 0, 0.1], [1, 0, 0.2], [0, 2, 0.05], [0, 2, 0.14], [0, 3, 0.3], [1, 1, 0.3], [0, 4, 0.1], [0, 2, 0.1], [1, 2, 0.29], [1, 5, 0.5]] ]
+		result = [(1, 0.51),(1, False),(1,False),(2, 0.2)]
 		total = 0
-		for i in xrange(2):
-			if pick_best_attribute(d_set[i], a_meta[i], numerical_splits_count) == result[i]:
+		for i in xrange(4):
+			if pick_best_attribute(d_set[i], a_meta[i], numerical_splits_count[i]) == result[i]:
 				total += 1
 				print "Passed %d"%(i+1)
 			else:
 				print "Failed %d"%(i+1)
-		print "Not all tests were met please look at %s"%name if total != 2 else "All tests passed"
+		print "Not all tests were met please look at %s"%name if total != 4 else "All tests passed"
 	if mode:
 		name = "mode"
 		print title,name,title
@@ -232,13 +235,23 @@ def check_ID3():
    data_set = [[1, 0.27], [0, 0.42], [0, 0.86], [0, 0.68], [0, 0.04], [1, 0.01], [1, 0.33], [1, 0.42], [1, 0.42], [0, 0.51], [1, 0.4]]
    numerical_splits_count = [5, 5]
    n = ID3(data_set, attribute_metadata, numerical_splits_count, 5)
+   #print n
    if n and [n.classify(x) == x[0] for x in data_set] == [True, False, True, True, True, True, True, True, True, True, True]:
       print "Passed 3"
    else:
       print "Failed 3"
-      fails += 1
+      fails += 1     
+      
    if fails > 0:
       print "not all tests passed, please see ID3."
    else:
       print "all tests passed."
+   attribute_metadata = [{'name': "winner",'is_nominal': True},{'name': "weather",'is_nominal': True}]
+   data_set = [[1, 0], [0, 1], [0, -1], [0, -1], [0, 1], [1, 0], [1, 0], [1, 1], [1, 0], [0, 1], [1, -1]]
+   numerical_splits_count = [5, 1]
+   n = ID3(data_set, attribute_metadata, numerical_splits_count, 1)
+   if n and [n.classify(x) == x[0] for x in data_set] == [True, True, True, True, True, True, True, False, True, True, False]:
+    print "Passed nominal test"
+   else:
+    print "Failed nominal test"
 test = grader( **options )

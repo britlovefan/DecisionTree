@@ -11,15 +11,15 @@ from modules.predictions import *
 #   options can be found in README.md
 
 options = {
-    'train' : 'data/btrain.csv',
-    'validate': 'data/bvalidate.csv',
-    'predict': 'data/btest.csv',
+    'train' : 'data/test_btrain.csv',
+    'validate': 'data/test_bvalidate.csv',
+    'predict': 'data/test_btest.csv',
     'limit_splits_on_numerical': 5,
     'limit_depth': 20,
-    'print_tree': True,
+    'print_tree': False,
     'print_dnf' : False,
-    'prune' : 'data/bvalidate.csv',
-    'learning_curve' : {
+    'prune' : 'data/test_bvalidate.csv',
+    'learning_curve': {
         'upper_bound' : 0.05,
         'increment' : 0.001
     }
@@ -41,12 +41,12 @@ def changemissing(data):
             else:
                 data[i][j] = mean_value
     return data
-
+                
 def decision_tree_driver(train, validate = False, predict = False, prune = False,
     limit_splits_on_numerical = False, limit_depth = False, print_tree = False,
     print_dnf = False, learning_curve = False):
-    
     train_set, attribute_metadata = parse(train, False)
+    prune = False
     if limit_splits_on_numerical != False:
         numerical_splits_count = [limit_splits_on_numerical] * len(attribute_metadata)
     else:
@@ -58,10 +58,8 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
         depth = float("inf")
 
     print "###\n#  Training Tree\n###"
-
+    train_set = changemissing(train_set) 
     # call the ID3 classification algorithm with the appropriate options
-    # deal with missing data
-    train_set = changemissing(train_set)
     tree = ID3(train_set, attribute_metadata, numerical_splits_count, depth)
     print '\n'
 
@@ -71,7 +69,7 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
         pruning_set, _ = parse(prune, False)
         reduced_error_pruning(tree,train_set,pruning_set)
         print ''
-
+    #print print_tree
     # print tree visually
     if print_tree:
         print '###\n#  Decision Tree\n###'
@@ -80,7 +78,7 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
         cursor.close()
         print 'Decision Tree written to /output/tree'
         print ''
-
+    
     # print tree in disjunctive normalized form
     if print_dnf:
         print '###\n#  Decision Tree as DNF\n###'
@@ -94,6 +92,7 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
     if validate != False:
         print '###\n#  Validating\n###'
         validate_set, _ = parse(validate, False)
+        validate_set = changemissing(validate_set)
         accuracy = validation_accuracy(tree,validate_set)
         print "Accuracy on validation set: " + str(accuracy)
         print ''
@@ -101,7 +100,7 @@ def decision_tree_driver(train, validate = False, predict = False, prune = False
     # generate predictions on the test set
     if predict != False:
         print '###\n#  Generating Predictions on Test Set\n###'
-        create_predictions(tree, predict)
+        create_predictions(tree,predict)
         print ''
 
     # generate a learning curve using the validation set
