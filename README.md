@@ -1,5 +1,5 @@
-### Decision Tree Starter Code
-#Credits: Philip Lan, Christopher Li, Alex Wang, Jacob Samson, Nishant Subramani
+### Decision Tree 
+
 
 ### Building
 
